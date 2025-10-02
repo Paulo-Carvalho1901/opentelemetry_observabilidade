@@ -2,7 +2,7 @@ import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
-from sqlalchemy.orm import registry, Mapped
+from sqlalchemy.orm import registry, Mapped, mapped_column
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -14,8 +14,10 @@ reg = registry()
 
 @reg.mapped_as_dataclass
 class Pessoa:
-    id: Mapped[int]
-    nome: Mapped[str]
+    __tablename__ = 'pessoas'
+
+    id: Mapped[int] = mapped_column(init=False, primary_key=True)
+    nome: Mapped[str] = mapped_column(default='Davi')
 
 
 @asynccontextmanager 
