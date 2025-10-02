@@ -14,8 +14,8 @@ reg = registry()
 
 @reg.mapped_as_dataclass
 class Pessoa:
-    id: int
-    nome: str
+    id: Mapped[int]
+    nome: Mapped[str]
 
 
 @asynccontextmanager 
