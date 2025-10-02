@@ -1,4 +1,5 @@
 import logging
+from dataclasses import asdict
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
@@ -40,5 +41,5 @@ def check():
 
 
 @app.post('/create')
-def create():
-    logger.info('Criando pessoa', extra={})
+def create(pessoa: Pessoa):
+    logger.info('Criando pessoa', extra=asdict(pessoa))
