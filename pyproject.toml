@@ -1,0 +1,33 @@
+[project]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Paulo Carvalho",email = "paulo.carvalho@global.ntt"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi (>=0.118.0,<0.119.0)",
+    "uvicorn (>=0.37.0,<0.38.0)",
+]
+
+[tool.poetry.group.otel.dependencies]
+opentelemetry-distro = "^0.58b0"
+opentelemetry-exporter-otlp = "^1.37.0"
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.37.0"
+
+[tool.poe]
+envfile = '.env'
+
+[tool.poe.tasks.serve]
+shell = 'opentelemetry-instrument uvicorn app.app:app'
+
+[tool.poe.tasks]
+otel-install = 'opentelemetry-bootstrap -a install'
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
