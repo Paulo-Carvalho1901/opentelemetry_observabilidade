@@ -17,4 +17,5 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get('/check')
 def check():
+    logger.info('App OK')
     return {'status': 'Ok'}
