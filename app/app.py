@@ -2,9 +2,21 @@ import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
+from sqlalchemy.orm import registry, Mapped
+
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
+
+
+reg = registry()
+
+
+@reg.mapped_as_dataclass
+class Pessoa:
+    id: int
+    nome: str
+
 
 @asynccontextmanager 
 async def lifespan(app):
