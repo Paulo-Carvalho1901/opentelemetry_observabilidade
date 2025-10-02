@@ -24,9 +24,9 @@ class Pessoa:
 @asynccontextmanager 
 async def lifespan(app):
     logger.info('Iniciando app.')
-    reg.metadata.create_all()
+    reg.metadata.create_all(engine)
     yield
-    reg.metadata.drop_all()
+    reg.metadata.drop_all(engine)
     logger.info('Finalizando app.')
 
 
@@ -37,3 +37,8 @@ app = FastAPI(lifespan=lifespan)
 def check():
     logger.info('App OK')
     return {'status': 'Ok'}
+
+
+@app.post('/create')
+def create():
+    logger.info('Criando pessoa', extra={})
