@@ -1,4 +1,7 @@
+import logging 
 from fastapi import FastAPI
+
+logger = logging.getLogger()
 
 app = FastAPI()
 
