@@ -2,6 +2,7 @@ import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
+from sqlalchemy import create_engine
 from sqlalchemy.orm import registry, Mapped, mapped_column
 
 logger = logging.getLogger()
@@ -10,7 +11,7 @@ logger.addHandler(logging.StreamHandler())
 
 
 reg = registry()
-
+engine = create_engine('sqlite:///:memory:')
 
 @reg.mapped_as_dataclass
 class Pessoa:
@@ -23,8 +24,11 @@ class Pessoa:
 @asynccontextmanager 
 async def lifespan(app):
     logger.info('Iniciando app.')
+    reg.metadata.create_all()
     yield
+    reg.metadata.drop_all()
     logger.info('Finalizando app.')
+
 
 app = FastAPI(lifespan=lifespan)
 
