@@ -57,17 +57,26 @@ class PessoaSchemaOut(BaseModel):
 
 
 def create_user(pessoa: PessoaSchemaIn):
-    with tracer.start_as_current_span('To em create') as t:
-        dump = pessoa.model_dump()
+    dump = pessoa.model_dump()
 
-        p = Pessoa(**dump)
+    p = Pessoa(**dump)
 
-        logger.info('Criando Pessoa', extra=dump)
+    logger.info('Criando Pessoa', extra=dump)
 
-        with Session(engine) as session:
-            session.add(p)
-            session.commit()
-            session.refresh(p)
+    with Session(engine) as session:
+        session.add(p)
+        session.commit()
+        session.refresh(p)
 
-        return p
-    
+    return p
+
+
+@app.post('/create', response_model=PessoaSchemaOut)
+def create(pessoa: PessoaSchemaIn):
+    if pessoa.nome == 'Paulo':
+        with tracer.start_as_current_span('Paulo case'):
+            pessoa.nome = 'Carvalho'
+            return create_user(pessoa)
+        
+    with tracer.start_as_current_span('To no create.'):
+        return create_user(pessoa)
