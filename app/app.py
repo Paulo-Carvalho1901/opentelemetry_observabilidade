@@ -27,8 +27,8 @@ async def lifespan(app):
     logger.info('Iniciando app.')
     reg.metadata.create_all(engine)
     yield
-    reg.metadata.drop_all(engine)
     logger.info('Finalizando app.')
+    reg.metadata.drop_all(engine)
 
 
 app = FastAPI(lifespan=lifespan)
