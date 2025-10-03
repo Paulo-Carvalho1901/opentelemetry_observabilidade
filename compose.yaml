@@ -10,7 +10,6 @@ services:
     ports:
       - 5433:5433
     environment: 
-      POSTGRES_USER: app_user
-      POSTGRES_DB: app_db
-      POSTGRES_PASSWORD: app_password
-      
+        POSTGRES_USER: app_user
+        POSTGRES_DB: app_db
+        POSTGRES_PASSWORD: app_password
