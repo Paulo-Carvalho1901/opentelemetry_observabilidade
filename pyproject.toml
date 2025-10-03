@@ -21,6 +21,7 @@ opentelemetry-exporter-otlp = "^1.37.0"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.37.0"
+locust = "^2.41.3"
 
 [tool.poe]
 envfile = '.env'
