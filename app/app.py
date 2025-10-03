@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from pydantic import BaseModel
 from sqlalchemy import create_engine
-from sqlalchemy.orm import registry, Mapped, mapped_column
+from sqlalchemy.orm import registry, Mapped, mapped_column, Session
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -40,9 +40,23 @@ def check():
     return {'status': 'Ok'}
 
 
-class PessoaSchema(BaseModel):
-    nom: str
+class PessoaSchemaIn(BaseModel):
+    nome: str
 
-@app.post('/create')
-def create(pessoa: PessoaSchema):
-    logger.info('Criando pessoa', extra=pessoa.model_dump())
+class PessoaSchemaOut(BaseModel):
+    nome: str
+
+
+@app.post('/create', response_model=PessoaSchemaOut)
+def create(pessoa: PessoaSchemaIn):
+    dump = pessoa.model_dump()
+    p = Pessoa(**dump)
+    
+    logger.info('Criando pessoa', extra=dump)
+
+    with Session(engine) as session:
+        session.add(p)
+        session.commit()
+        session.refresh(p)
+
+    return p
