@@ -2,7 +2,7 @@ import logging
 from dataclasses import asdict
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-
+from pydantic import BaseModel
 from sqlalchemy import create_engine
 from sqlalchemy.orm import registry, Mapped, mapped_column
 
@@ -40,6 +40,9 @@ def check():
     return {'status': 'Ok'}
 
 
+class PessoaSchema(BaseModel):
+    nom: str
+
 @app.post('/create')
-def create(pessoa: Pessoa):
-    logger.info('Criando pessoa', extra=asdict(pessoa))
+def create(pessoa: PessoaSchema):
+    logger.info('Criando pessoa', extra=pessoa.model_dump())
