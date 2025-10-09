@@ -10,3 +10,5 @@ class WebsiteUser(HttpUser):
     @task
     def check(self):
         self.client.post("/create", json={'nome': 'Carlos'})
+
+# locust -f .\locustfile.py
